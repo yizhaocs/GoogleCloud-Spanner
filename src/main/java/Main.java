@@ -3,6 +3,7 @@ import com.google.cloud.spanner.Spanner;
 import com.google.cloud.spanner.SpannerOptions;
 
 import java.io.PrintWriter;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Ref:
@@ -15,5 +16,11 @@ public class Main {
         DatabaseClient dbClient = GetDatabaseClient.getDbClient(spanner, "test-instance", "adara");
         WriteToSpanner.spannerWriteTest(dbClient, "ckvmap");
         ReadFromSpanner.spannerReadTest(dbClient, "SELECT * from ckvmap;");
+        // Closes the client which will free up the resources used
+        try {
+            spanner.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

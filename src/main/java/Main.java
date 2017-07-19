@@ -12,15 +12,20 @@ import java.util.concurrent.ExecutionException;
  */
 public class Main {
     public static void main(String[] args){
-        Spanner spanner = GetSpannerService.getSpannerService();
-        DatabaseClient dbClient = GetDatabaseClient.getDbClient(spanner, "test-instance", "adara");
-        WriteToSpanner.spannerWriteTest(dbClient, "ckvmap");
-        ReadFromSpanner.spannerReadTest(dbClient, "SELECT * from ckvmap;");
-        // Closes the client which will free up the resources used
+        Spanner spanner = null;
         try {
-            spanner.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            spanner = GetSpannerService.getSpannerService();
+            DatabaseClient dbClient = GetDatabaseClient.getDbClient(spanner, "test-instance", "adara");
+            WriteToSpanner.spannerWriteTest(dbClient, "ckvmap");
+            ReadFromSpanner.spannerReadTest(dbClient, "SELECT * from ckvmap;");
+        }finally {
+            // Closes the client which will free up the resources used
+            try {
+                spanner.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
     }
 }

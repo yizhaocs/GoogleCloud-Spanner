@@ -15,7 +15,7 @@ public class ReadFromSpanner {
 
         // Prints the results
         while (resultSet.next()) {
-            System.out.print("" + resultSet.getString(0));
+            //System.out.print("" + resultSet.get());
         }
     }
 }

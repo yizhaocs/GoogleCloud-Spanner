@@ -7,11 +7,11 @@ import com.google.cloud.spanner.TransactionRunner;
  * Created by yzhao on 7/19/17.
  */
 public class WriteToSpanner {
-    public static void spannerWriteTest(DatabaseClient dbClient) {
+    public static void spannerWriteTest(DatabaseClient dbClient, final String table) {
         dbClient.readWriteTransaction()
                 .run(new TransactionRunner.TransactionCallable<Void>() {
                     public Void run(TransactionContext transaction) throws Exception {
-                        transaction.buffer(Mutation.newUpdateBuilder("ckvmap")
+                        transaction.buffer(Mutation.newUpdateBuilder(table)
                                 .set("cookieid")
                                 .to(1)
                                 .set("value")

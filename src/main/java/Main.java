@@ -5,7 +5,9 @@ import com.google.cloud.spanner.SpannerOptions;
 import java.io.PrintWriter;
 
 /**
- * Created by yzhao on 7/19/17.
+ * Ref:
+ *  https://www.youtube.com/watch?v=VAIXpjhjCtc
+ *  https://gist.github.com/branflake2267/38836e5f74c5f993f6a621e58743db7a
  */
 public class Main {
     public static void main(String[] args){

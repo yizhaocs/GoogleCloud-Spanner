@@ -1,61 +1,54 @@
 package com.yizhao.app;
 
-import com.google.api.services.spanner.v1.Spanner;
-import com.google.api.services.spanner.v1.model.Database;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpExecuteInterceptor;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.cloud.spanner.DatabaseClient;
+import com.google.cloud.spanner.Spanner;
 import com.yizhao.app.Credentials.GoogleCloudFactory;
 
 /**
  * Ref:
  *  https://www.youtube.com/watch?v=VAIXpjhjCtc
  *  https://gist.github.com/branflake2267/38836e5f74c5f993f6a621e58743db7a
+ *
+ *  download jetty-alpn-agent-2.0.1.jar from:
+ *  https://mvnrepository.com/artifact/org.mortbay.jetty.alpn/jetty-alpn-agent/2.0.1
+ *
+ *  then:
+ *  mvn clean package
+ *  /usr/java/jdk/bin/java -javaagent:/home/yzhao/jetty-alpn-agent-2.0.1.jar -jar spanner-jar-with-dependencies.jar
+ *
+ *  jetty-alpn-agent-2.0.1.jar reference:
+ *  https://github.com/grpc/grpc-java/issues/1311
+ *
  */
 public class Main {
+    private static final String SERVICE_ACCOUNT_EMAIL = "adara-bigtable1@adara-bigtable1.iam.gserviceaccount.com";
+    //private static final String PATH_TO_KEY = "/opt/opinmind/conf/credentials/yizhaocs/";
+    private static final String PATH_TO_KEY = "/home/yzhao/credentials/";
+    private static final String PATH_TO_P12_FILE = PATH_TO_KEY + "newcache-8472d9d73511.p12";
+
     public static void main(String[] args) throws Exception{
-        Spanner spanner = null;
-        try {
-           spanner = GoogleCloudFactory.getGoogleCloudSpanerInstance("adara-bigtable1@adara-bigtable1.iam.gserviceaccount.com", "/opt/opinmind/conf/credentials/yizhaocs/newcache-8472d9d73511.p12");
-           /* ExecuteSqlRequest mExecuteSqlRequest = new ExecuteSqlRequest();
-            mExecuteSqlRequest.setSql("select * from ckvmap;");
-            Spanner.Projects.Instances.Databases.Sessions sessions =
-            Spanner.Projects.Instances.Databases.Sessions.ExecuteSql e = spanner.projects().instances().databases().sessions().executeSql("projects/adara-bigtable1/instances/test-instance/databases/ckvmap/sessions/new",mExecuteSqlRequest);
-            e.execute();*/
-            Spanner.Projects.Instances.Databases.Get get = spanner.projects().instances().databases().get("projects/adara-bigtable1/instances/test-instance/databases/adara");
-            Database d = get.execute();
-            System.out.println(d);
-            System.out.println(d.get("time"));
+        // SERVICE VERSION
+        // HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        // JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
-
-
-           // Table response = request.execute();
-
-            /*  Spanner.Projects.Instances.Databases request = client.tables().insert(projectId, dataset, content);
-            //Table response = request.execute();
-            //spanner = GetSpannerService.getSpannerService();
-            DatabaseClient dbClient = GetDatabaseClient.getDbClient(spanner, "test-instance", "adara");
-           // DatabaseClient dbClient = GetDatabaseClient.getDbClient(spanner, "test-instance", "adara");
-            long startTime = System.nanoTime();
-            for(int i = 0; i < 2000; i++){
-                WriteToSpanner.insert(dbClient, "ckvmap", System.nanoTime(), i);
-            }
-            long endTime = System.nanoTime();
-
-            long duration = (endTime - startTime)/1000000; // in milliseconds
-
-            System.out.println("total time used:" + duration + " milliseconds"); // total time used:126457 milliseconds, 63.3552104 ms per request
-            //ReadFromSpanner.spannerReadTest(dbClient, "SELECT * from ckvmap;");*/
-        }finally {
-            // Closes the client which will free up the resources used
-           /* try {
-                spanner.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
+        // Build service account credential.
+        // Credential credential = GoogleCloudFactory.getServiceAccountCredential(httpTransport, jsonFactory, SERVICE_ACCOUNT_EMAIL, PATH_TO_P12_FILE);
+        Spanner spanner = GetSpannerService.getSpannerService("/home/yzhao/credentials/adara-bigtable1-a83816086490.json");
+        DatabaseClient dbClient = GetDatabaseClient.getDbClient(spanner, "test-instance", "adara");
+        long startTime = System.nanoTime();
+        for(int i = 0; i < Integer.valueOf(args[0]); i++){
+            WriteToSpanner.insert(dbClient, "ckvmap", System.nanoTime(), i);
         }
+        long endTime = System.nanoTime();
 
-    }
+        long duration = (endTime - startTime)/1000000; // in milliseconds
 
-    public static String getUnixTimeStamp(){
-        return String.valueOf(System.currentTimeMillis());
-
+        System.out.println("total time used:" + duration + " milliseconds"); // total time used:126457 milliseconds, 63.3552104 ms per request
     }
 }

@@ -16,15 +16,12 @@ package com.yizhao.app.Credentials;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.spanner.v1.Spanner;
-import com.google.api.services.spanner.v1.SpannerScopes;
 import com.google.common.collect.ImmutableList;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +41,7 @@ public class GoogleCloudFactory {
 	 * Authorizes the installed application to access user's protected data.
 	 * 
 	 *
-	 */		
+	 */
 	// SERVICE version variables
 //	private static final String SERVICE_ACCOUNT_EMAIL = "1045802503707-4vd19voeuisdoap44jo0m9274l6eup44@developer.gserviceaccount.com";
 //	private static final String PATH_TO_KEY = "/opt/opinmind/conf/credentials/";	
@@ -57,11 +54,15 @@ public class GoogleCloudFactory {
 	private static final String PATH_TO_P12_FILE = PATH_TO_KEY + "newcache-8472d9d73511.p12";
 	private static final String ACCOUNT_TO_IMPERSONATE = "yizhao.cs@gmail.com";
 
-	private static Credential getServiceAccountCredential(
+	public static Credential getServiceAccountCredential(
 			HttpTransport httpTransport, JsonFactory factory, String serviceAccountEmail, String p12File) throws Exception {
 				
 		Set<String> scopes = new HashSet<String>();
-		scopes.addAll(SpannerScopes.all());
+		HashSet var0 = new HashSet();
+		var0.add("https://www.googleapis.com/auth/cloud-platform");
+		var0.add("https://www.googleapis.com/auth/spanner.admin");
+		var0.add("https://www.googleapis.com/auth/spanner.data");
+		scopes.addAll( Collections.unmodifiableSet(var0));
 		/*
 		scopes.addAll(StorageScopes.all());
 		scopes.addAll(BigqueryScopes.all());
@@ -130,11 +131,11 @@ public class GoogleCloudFactory {
 
 */
 
-	/**
+/*	*//**
 	 * Performs all necessary setup steps for running requests against the API.
 	 *
 	 * @return An initialized {@link Spanner} service object.
-	 */
+	 *//*
 	public static Spanner getGoogleCloudSpanerInstance(String serviceAccountEmail, String p12File) throws Exception {
 
 		// SERVICE VERSION
@@ -148,5 +149,5 @@ public class GoogleCloudFactory {
 		// Create DFA Reporting client.
 		return new Spanner.Builder(httpTransport, jsonFactory, credential)
 				.setApplicationName("spanner test").build();
-	}
+	}*/
 }

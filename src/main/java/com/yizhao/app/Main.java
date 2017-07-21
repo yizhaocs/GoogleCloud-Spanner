@@ -33,6 +33,7 @@ public class Main {
     private static final String PATH_TO_P12_FILE = PATH_TO_KEY + "newcache-8472d9d73511.p12";
 
     public static void main(String[] args) throws Exception{
+        int count = Integer.valueOf(args[0]);
         // SERVICE VERSION
         // HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         // JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -42,7 +43,7 @@ public class Main {
         Spanner spanner = GetSpannerService.getSpannerService("/home/yzhao/credentials/adara-bigtable1-a83816086490.json");
         DatabaseClient dbClient = GetDatabaseClient.getDbClient(spanner, "test-instance", "adara");
         long startTime = System.nanoTime();
-        for(int i = 0; i < Integer.valueOf(args[0]); i++){
+        for(int i = 0; i < count; i++){
             WriteToSpanner.insert(dbClient, "ckvmap", System.nanoTime(), i);
         }
         long endTime = System.nanoTime();

@@ -1,3 +1,5 @@
+package com.yizhao.app;
+
 import com.google.cloud.spanner.DatabaseClient;
 import com.google.cloud.spanner.DatabaseId;
 import com.google.cloud.spanner.Spanner;

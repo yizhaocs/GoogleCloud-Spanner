@@ -1,3 +1,5 @@
+package com.yizhao.app;
+
 import com.google.cloud.spanner.Spanner;
 import com.google.cloud.spanner.SpannerOptions;
 

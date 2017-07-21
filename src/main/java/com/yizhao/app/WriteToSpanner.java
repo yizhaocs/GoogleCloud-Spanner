@@ -1,19 +1,22 @@
+package com.yizhao.app;
+
 import com.google.cloud.spanner.DatabaseClient;
 import com.google.cloud.spanner.Mutation;
 import com.google.cloud.spanner.TransactionContext;
 import com.google.cloud.spanner.TransactionRunner;
 
 /**
- * Created by yzhao on 7/19/17.
+ * mvn clean package
+ * java -jar /Users/yzhao/IdeaProjects/spannertesting/target/spanner.jar
  */
 public class WriteToSpanner {
-    public static void insert(DatabaseClient dbClient, final String table, final int cookie, final int value) {
+    public static void insert(DatabaseClient dbClient, final String table, final long time, final int value) {
         dbClient.readWriteTransaction()
                 .run(new TransactionRunner.TransactionCallable<Void>() {
                     public Void run(TransactionContext transaction) throws Exception {
                         transaction.buffer(Mutation.newInsertBuilder(table)
-                                .set("cookieid")
-                                .to(cookie)
+                                .set("time")
+                                .to(time)
                                 .set("value")
                                 .to(value)
                                 .build());

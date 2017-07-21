@@ -11,18 +11,26 @@ import com.google.cloud.spanner.TransactionRunner;
  */
 public class WriteToSpanner {
     public static void insert(DatabaseClient dbClient, final String table, final long time, final int value) {
+        //long startTime = System.nanoTime();
         dbClient.readWriteTransaction()
                 .run(new TransactionRunner.TransactionCallable<Void>() {
                     public Void run(TransactionContext transaction) throws Exception {
                         transaction.buffer(Mutation.newInsertBuilder(table)
-                                .set("time")
+                                .set("key")
+                                .to(value)
+                                .set("value1")
                                 .to(time)
-                                .set("value")
+                                .set("value2")
                                 .to(value)
                                 .build());
                         return null;
                     }
                 });
+     /*   long endTime = System.nanoTime();
+
+        long duration = (endTime - startTime)/1000000; // in milliseconds
+
+        System.out.println("total time used for query:" + duration + " milliseconds");*/
     }
 
 

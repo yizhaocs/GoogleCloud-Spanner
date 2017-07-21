@@ -33,23 +33,33 @@ public class Main {
     private static final String PATH_TO_P12_FILE = PATH_TO_KEY + "newcache-8472d9d73511.p12";
 
     public static void main(String[] args) throws Exception{
-        int count = Integer.valueOf(args[0]);
-        // SERVICE VERSION
-        // HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-        // JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-
-        // Build service account credential.
-        // Credential credential = GoogleCloudFactory.getServiceAccountCredential(httpTransport, jsonFactory, SERVICE_ACCOUNT_EMAIL, PATH_TO_P12_FILE);
         Spanner spanner = GetSpannerService.getSpannerService("/home/yzhao/credentials/adara-bigtable1-a83816086490.json");
         DatabaseClient dbClient = GetDatabaseClient.getDbClient(spanner, "test-instance", "adara");
-        long startTime = System.nanoTime();
-        for(int i = 0; i < count; i++){
-            WriteToSpanner.insert(dbClient, "ckvmap", System.nanoTime(), i);
+
+        if(args[0].equals("writing")) {
+            int count = Integer.valueOf(args[1]);
+            // SERVICE VERSION
+            // HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+            // JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+
+            // Build service account credential.
+            // Credential credential = GoogleCloudFactory.getServiceAccountCredential(httpTransport, jsonFactory, SERVICE_ACCOUNT_EMAIL, PATH_TO_P12_FILE);
+
+            long startTime = System.nanoTime();
+            for (int i = 0; i < count; i++) {
+                WriteToSpanner.insert(dbClient, "ckvmap", System.nanoTime(), i);
+            }
+            long endTime = System.nanoTime();
+
+            long duration = (endTime - startTime) / 1000000; // in milliseconds
+
+            System.out.println("total time used for writing:" + duration + " milliseconds"); // total time used:126457 milliseconds, 63.3552104 ms per request
+
+        }else {
+
+            ReadFromSpanner.spannerReadTest(dbClient, "select * from ckvmap;");
         }
-        long endTime = System.nanoTime();
 
-        long duration = (endTime - startTime)/1000000; // in milliseconds
-
-        System.out.println("total time used:" + duration + " milliseconds"); // total time used:126457 milliseconds, 63.3552104 ms per request
     }
+
 }

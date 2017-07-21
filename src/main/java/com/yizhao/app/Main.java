@@ -55,9 +55,12 @@ public class Main {
 
             System.out.println("total time used for writing:" + duration + " milliseconds"); // total time used:126457 milliseconds, 63.3552104 ms per request
 
-        }else {
+        }else if(args[0].equals("reading")){
 
-            ReadFromSpanner.spannerReadTest(dbClient, "select * from ckvmap;");
+            for(int i = 0; i < 2000; i++){
+                ReadFromSpanner.spannerReadTest(args[1], dbClient, "select * from ckvmap where key=" + i + ";", i);
+            }
+
         }
 
     }

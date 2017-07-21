@@ -35,8 +35,6 @@ public class ReadFromSpanner {
             Struct resultSet = dbClient.singleUse().readRow("ckvmap", Key.of(i), Arrays.asList("key","value1","value2"));
         }else if(type.equals("singleUseReadOnlyTransaction")) {
             Struct resultSet = dbClient.singleUseReadOnlyTransaction().readRow("ckvmap", Key.of(i), Arrays.asList("key", "value1", "value2"));
-        }else if(type.equals("singleUseReadOnlyTransaction")){
-                Struct resultSet = dbClient.singleUseReadOnlyTransaction().readRow("ckvmap", Key.of(i), Arrays.asList("key","value1","value2"));
         }else if(type.equals("readOnlyTransaction")){
             Struct resultSet = dbClient.readOnlyTransaction().readRow("ckvmap", Key.of(i), Arrays.asList("key","value1","value2"));
         }

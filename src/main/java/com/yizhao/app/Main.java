@@ -20,7 +20,7 @@ import com.yizhao.app.Credentials.GoogleCloudFactory;
  *
  *  then:
  *  mvn clean package
- *  /usr/java/jdk/bin/java -javaagent:/home/yzhao/jetty-alpn-agent-2.0.1.jar -jar spanner-jar-with-dependencies.jar
+ *  /usr/java/jdk/bin/java -javaagent:/home/yzhao/jetty-alpn-agent-2.0.1.jar -jar spanner-jar-with-dependencies.jar reading singleUse
  *
  *  jetty-alpn-agent-2.0.1.jar reference:
  *  https://github.com/grpc/grpc-java/issues/1311

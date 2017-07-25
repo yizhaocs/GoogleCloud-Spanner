@@ -1,14 +1,11 @@
 package com.yizhao.app;
 
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpExecuteInterceptor;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.cloud.spanner.DatabaseClient;
 import com.google.cloud.spanner.Spanner;
-import com.yizhao.app.Credentials.GoogleCloudFactory;
 
 /**
  * Ref:
@@ -22,6 +19,8 @@ import com.yizhao.app.Credentials.GoogleCloudFactory;
  *  mvn clean package
  *  /usr/java/jdk/bin/java -javaagent:/home/yzhao/jetty-alpn-agent-2.0.1.jar -jar spanner-jar-with-dependencies.jar writing 1000
  *  /usr/java/jdk/bin/java -javaagent:/home/yzhao/jetty-alpn-agent-2.0.1.jar -jar spanner-jar-with-dependencies.jar reading singleUse
+ *
+ *   /usr/java/jdk8/bin/java -javaagent:/home/yzhao/jetty-alpn-agent-2.0.1.jar -jar spanner-jar-with-dependencies.jar writing 1000
  *
  *  jetty-alpn-agent-2.0.1.jar reference:
  *  https://github.com/grpc/grpc-java/issues/1311

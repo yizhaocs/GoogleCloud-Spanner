@@ -1,6 +1,5 @@
 package com.yizhao.app;
 
-import com.google.api.client.auth.oauth2.Credential;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.spanner.Spanner;
 import com.google.cloud.spanner.SpannerOptions;
